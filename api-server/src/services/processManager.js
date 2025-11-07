@@ -1,7 +1,7 @@
 // src/services/processManager.js
 const { Worker } = require('worker_threads');
 const path = require('path');
-const { v4: uuid } = require('uuid');
+const { randomUUID } = require('crypto');
 const { sequelize, Device, DeviceProcess, DeviceStatusHistory } = require('../models');
 const { createTransaction } = require('./transactionService');
 
@@ -22,7 +22,7 @@ async function startProcess(deviceId) {
 
     // Create process row
     const proc = await DeviceProcess.create({
-      id: uuid(),
+      id: randomUUID(),
       device_id: deviceId,
       pid: `worker-${Math.floor(Math.random()*1e5)}`
     }, { transaction: t });
@@ -30,7 +30,7 @@ async function startProcess(deviceId) {
     // Flip status + audit if needed
     if (device.status !== 'active') {
       await DeviceStatusHistory.create({
-        id: uuid(),
+        id: randomUUID(),
         device_id: deviceId,
         old_status: device.status,
         new_status: 'active',
@@ -82,7 +82,7 @@ async function startProcess(deviceId) {
           const dev = await Device.findByPk(deviceId, { transaction: t2, lock: t2.LOCK.UPDATE });
           if (dev && dev.status !== 'inactive') {
             await DeviceStatusHistory.create({
-              id: uuid(),
+              id: randomUUID(),
               device_id: deviceId,
               old_status: dev.status,
               new_status: 'inactive',
@@ -112,7 +112,7 @@ async function markDeviceInactive(deviceId, reason) {
 
     if (device.status !== 'inactive') {
       await DeviceStatusHistory.create({
-        id: uuid(),
+        id: randomUUID(),
         device_id: deviceId,
         old_status: device.status,
         new_status: 'inactive',

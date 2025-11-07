@@ -1,11 +1,12 @@
 // src/services/deviceService.js
-const { v4: uuid } = require('uuid');
+// Use built-in Node UUID to avoid ESM-only 'uuid' package issues
+const { randomUUID } = require('crypto');
 const { Device } = require('../models');
 const { startProcess, stopProcess, isActive } = require('./processManager');
 
 async function createDevice({ name, device_type, ip_address, metadata }) {
   return Device.create({
-    id: uuid(),
+    id: randomUUID(),
     name,
     device_type,
     ip_address,

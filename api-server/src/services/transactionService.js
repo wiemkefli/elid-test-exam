@@ -1,10 +1,10 @@
 // src/services/transactionService.js
-const { v4: uuid } = require('uuid');
+const { randomUUID } = require('crypto');
 const { Transaction } = require('../models');
 
 async function createTransaction({ device_id, username, event_type, payload, timestamp = new Date() }) {
   return Transaction.create({
-    transaction_id: uuid(),
+    transaction_id: randomUUID(),
     device_id,
     username: username ?? null,
     event_type,
