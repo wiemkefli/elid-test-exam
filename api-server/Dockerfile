@@ -12,7 +12,7 @@ RUN npm ci
 COPY ./ ./
 RUN chown -R node:node /src
 USER node
-CMD ["node", "app"]
+CMD ["node", "src/index.js"]
 
 FROM base as dev
 ENV NODE_ENV=development
@@ -20,4 +20,4 @@ RUN npm install -g nodemon && npm install
 COPY ./ ./
 RUN chown -R node:node /src
 USER node
-CMD ["nodemon", "app"]
+CMD ["nodemon", "src/index.js"]
