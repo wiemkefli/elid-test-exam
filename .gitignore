@@ -10,7 +10,7 @@ node_modules/
 api-server/node_modules/
 ui/node_modules/
 **/node_modules/
-/package-lock.json
+
 
 # Build artifacts
 dist/
@@ -19,6 +19,7 @@ coverage/
 playwright-report/
 test-results/
 tmp/
+tests/
 
 # Docker
 .dockerignore
